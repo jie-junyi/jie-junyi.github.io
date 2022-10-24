@@ -6,14 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://jie-junyi.github.io">
-  <title>Jie-Sir</title>
+  <title>first | Jie-Sir</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Jie-Sir">
-<meta property="og:url" content="https://jie-junyi.github.io/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="first">
+<meta property="og:url" content="https://jie-junyi.github.io/2022/10/24/first/index.html">
 <meta property="og:site_name" content="Jie-Sir">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-10-24T09:04:29.000Z">
+<meta property="article:modified_time" content="2022-10-24T13:23:13.628Z">
 <meta property="article:author" content="jie-junyi">
+<meta property="article:tag" content="尝试">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Jie-Sir" type="application/atom+xml">
@@ -150,151 +153,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-View的绘制流程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-first" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/10/24/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/">View的绘制流程</a>
-    </h1>
-  
-
-        
-        <a href="/2022/10/24/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2022-10-24T13:12:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-10-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>View的绘制流程</p>
-<h5 id="view是什么？"><a href="#view是什么？" class="headerlink" title="view是什么？"></a>view是什么？</h5><h6 id="view的继承关系"><a href="#view的继承关系" class="headerlink" title="view的继承关系"></a>view的继承关系</h6><p><img src="https://img-blog.csdnimg.cn/20190815100748544.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTAxMjczMzI=,size_16,color_FFFFFF,t_70#pic_center" alt="img"></p>
-<h6 id="Activity的组成"><a href="#Activity的组成" class="headerlink" title="Activity的组成"></a>Activity的组成</h6><p><img src="https://img-blog.csdnimg.cn/20200927111003956.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Nsb3VkeV9oYXBweQ==,size_16,color_FFFFFF,t_70#pic_center" alt="img"></p>
-<p>Window 类<br>　　该类是一个<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%8A%BD%E8%B1%A1%E7%B1%BB&spm=1001.2101.3001.7020">抽象类</a>，提供了绘制窗口的一组通用API。每个Activity会创建一个Window用于承载View视图的显示</p>
-<p>PhoneWindow类    </p>
-<p>​        该<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E7%B1%BB%E7%BB%A7%E6%89%BF&spm=1001.2101.3001.7020">类继承</a>于Window类，是Window类的具体实现，即我们可以通过该类具体去绘制窗口。并且，该类内部包含了一个DecorView对象，该DectorView对象是所有应用窗口(Activity界面)的根View。 简而言之，PhoneWindow类是把一个FrameLayout类即DecorView对象进行一定的包装，将它作为应用窗口的根View，并提供一组通用的窗口操作接口。</p>
-<p>DecorView类<br>　　该类是PhoneWindow类的内部类。该类是一个FrameLayout的子类，并且是PhoneWindow的子类，最终会被加载到Window当中，它内部只有一个垂直方向的LinearLayout分为两部分：比如说添加TitleBar(标题栏)，以及TitleBar上的滚动条等 。最重要的一点是，它是所有应用窗口的根View 。</p>
-<ul>
-<li>TitleBar：屏幕顶部的状态栏</li>
-<li>ContentView：Activity对应的XML布局，通过setContentView设置到DecorView中。</li>
-</ul>
-<h5 id="view的绘制流程："><a href="#view的绘制流程：" class="headerlink" title="view的绘制流程："></a>view的绘制流程：</h5><p>view的绘制流程，指的就是measure、layout和draw。其中，measure用来测量View的宽高，layout用来确定View的位置，draw则用来绘制view。</p>
-<p>View的绘制是从ViewRootImpl的performTraversals()方法开始，从最顶层的View(ViewGroup)开始逐层对每个View进行绘制操作，下面来看一下该方法部分源代码：</p>
-<h6 id="ViewRootlmpl"><a href="#ViewRootlmpl" class="headerlink" title="ViewRootlmpl:"></a>ViewRootlmpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">performTraversals</span><span class="params">()</span> &#123;</span><br><span class="line">     ...............</span><br><span class="line">    <span class="comment">//measur过程</span></span><br><span class="line">    performMeasure(childWidthMeasureSpec, childHeightMeasureSpec);</span><br><span class="line">     ...............</span><br><span class="line">    <span class="comment">//layout过程</span></span><br><span class="line">    performLayout(lp, desiredWindowWidth, desiredWindowHeight);</span><br><span class="line">     ...............</span><br><span class="line">    <span class="comment">//draw过程</span></span><br><span class="line">    performDraw();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>measure：为测量宽高过程，如果是ViewGroup还要在onMeasure中对所有子View进行measure操作。</li>
-<li>layout：用于摆放View在ViewGroup中的位置，如果是ViewGroup要在onLayout方法中对所有子View进行layout操作。</li>
-<li>draw：往View上绘制图像。</li>
-</ul>
-<h6 id="Measure"><a href="#Measure" class="headerlink" title="Measure:"></a>Measure:</h6><p>performMeasure()源码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">performMeasure</span><span class="params">(<span class="type">int</span> childWidthMeasureSpec, <span class="type">int</span> childHeightMeasureSpec)</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (mView == <span class="literal">null</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">          mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);</span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">          Trace.traceEnd(Trace.TRACE_TAG_VIEW);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>可以看出从mView(最顶层ViewGroup)开始进行测量操作，然后逐层遍历View并执行measure操作。</p>
-<h6 id="MeasureSpec"><a href="#MeasureSpec" class="headerlink" title="MeasureSpec:"></a>MeasureSpec:</h6><p>它是一个32位int类型数值，高两位SpacMode代表测量模式，低30位SpacSize代表测量尺寸，是View的内部类，源码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MeasureSpec</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MODE_SHIFT</span> <span class="operator">=</span> <span class="number">30</span>;  </span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MODE_MASK</span>  <span class="operator">=</span> <span class="number">0x3</span> &lt;&lt; MODE_SHIFT;  </span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">UNSPECIFIED</span> <span class="operator">=</span> <span class="number">0</span> &lt;&lt; MODE_SHIFT;  </span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">EXACTLY</span> <span class="operator">=</span> <span class="number">1</span> &lt;&lt; MODE_SHIFT;  </span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">AT_MOST</span> <span class="operator">=</span> <span class="number">2</span> &lt;&lt; MODE_SHIFT;  </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<p>内部包含三种测量模式：</p>
-<ul>
-<li><strong>UNSPECIFIED ：</strong>父布局不会对子View做任何限制</li>
-<li><strong>EXACTLY ：</strong>精确数值，比如使用了match_parent或者xxxdp，表示父布局已经决定了子<code>View</code>的大小，通常在这种情况下View的尺寸就是SpacSize</li>
-<li><strong>AT_MOST ：</strong>自适应，对应wrap_content子View可以根据内容设置自己的大小，但前提是不能超出父ViewGroup的宽高。</li>
-</ul>
-<p>子view的MeasureSpec由父MeasureSpec和其自己的LayoutParams(布局参数)共同决定</p>
-<p><img src="https://img-blog.csdnimg.cn/20190908173654848.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3poYW9xaW5tdXh1ZQ==,size_16,color_FFFFFF,t_70" alt="img">onMeasure()方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onMeasure</span><span class="params">(<span class="type">int</span> widthMeasureSpec, <span class="type">int</span> heightMeasureSpec)</span> &#123;</span><br><span class="line">       <span class="comment">//默认宽  </span></span><br><span class="line">       <span class="type">int</span> <span class="variable">defaultWidth</span> <span class="operator">=</span> <span class="number">0</span>;    </span><br><span class="line">       <span class="comment">//默认高</span></span><br><span class="line">       <span class="type">int</span> <span class="variable">defaultHeight</span> <span class="operator">=</span> <span class="number">0</span>;    </span><br><span class="line">       setMeasuredDimension(</span><br><span class="line">            getDefaultSize(defaultWidth, widthMeasureSpec),  </span><br><span class="line">            getDefaultSize(defaultHeight, heightMeasureSpec));  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>一般的自定义View中，如果对宽高没有特殊需求可直接通过getDefaultSize()方法获取，该方法位于View中源码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">getDefaultSize</span><span class="params">(<span class="type">int</span> size, <span class="type">int</span> measureSpec)</span> &#123;</span><br><span class="line">     <span class="comment">//默认尺寸</span></span><br><span class="line">     <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> size;</span><br><span class="line">     <span class="comment">//获取测量模式</span></span><br><span class="line">     <span class="type">int</span> <span class="variable">specMode</span> <span class="operator">=</span> MeasureSpec.getMode(measureSpec);</span><br><span class="line">     <span class="comment">//获取尺寸</span></span><br><span class="line">     <span class="type">int</span> <span class="variable">specSize</span> <span class="operator">=</span> MeasureSpec.getSize(measureSpec);</span><br><span class="line"></span><br><span class="line">     <span class="keyword">switch</span> (specMode) &#123;</span><br><span class="line">        <span class="keyword">case</span> MeasureSpec.UNSPECIFIED:</span><br><span class="line">            result = size;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> MeasureSpec.AT_MOST:</span><br><span class="line">        <span class="keyword">case</span> MeasureSpec.EXACTLY:</span><br><span class="line">            result = specSize;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> result;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<p>从源码可知，获取mode和size后会分别对三种测量模式进行判断，UNSPECIFIED使用默认尺寸，而AT_MOST和EXACTLY使用父布局给出的测量尺寸。尺寸计算完毕后通过setMeasuredDimension(width,height)设置最终宽高。</p>
-<h6 id="Layout："><a href="#Layout：" class="headerlink" title="Layout："></a>Layout：</h6><p>performLayout()部分源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">performLayout</span><span class="params">(WindowManager.LayoutParams lp, <span class="type">int</span> desiredWindowWidth,</span></span><br><span class="line"><span class="params">            <span class="type">int</span> desiredWindowHeight)</span> &#123;</span><br><span class="line">        .........</span><br><span class="line">        <span class="keyword">final</span> <span class="type">View</span> <span class="variable">host</span> <span class="operator">=</span> mView;</span><br><span class="line">        <span class="keyword">if</span> (host == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        host.layout(<span class="number">0</span>, <span class="number">0</span>, host.getMeasuredWidth(), host.getMeasuredHeight());</span><br><span class="line">        .........</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>跟measure类似，同样是从mView(最顶层ViewGroup)开始进行layout操作，随后逐层遍历。layout(l,t,r,b)四个参数分别对应左上右下的位置，从而确定View在ViewGroup中的位置。下面来看一下layout()部分源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">layout</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> t, <span class="type">int</span> r, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">    .......</span><br><span class="line">    <span class="comment">//通过setOpticalFrame()和setFrame()老确定四个点的位置</span></span><br><span class="line">    <span class="type">boolean</span> <span class="variable">changed</span> <span class="operator">=</span> isLayoutModeOptical(mParent) ? </span><br><span class="line">    setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);</span><br><span class="line">    .......</span><br><span class="line">    <span class="comment">//调用onLayout()，ViewGroup须重写此方法</span></span><br><span class="line">    onLayout(changed, l, t, r, b);</span><br><span class="line">    .......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>结合源码可知layout()会将四个位置参数传递给setOpticalFrame()或者setFrame()，而setOpticalFrame()内部会调用setFrame()，所以最终通过setFrame()确定View在ViewGroup中的位置。位置确定完毕会调用onLayout(l,t,r,b)对子View进行摆放。</p>
-<p>onLayout()</p>
-<p>View和ViewGroup在执行完setFrame()后都会调用onLayout()方法，但上面也有提到该方法的作用是对子View进行位置摆放，所以单一View是不需要重写此方法。而ViewGroup会根据自己的特性任意对子View进行摆放。</p>
-<h6 id="Draw："><a href="#Draw：" class="headerlink" title="Draw："></a>Draw：</h6><p>performDraw()执行后同样会从根布局开始逐层对每个View进行draw操作，在View中绘制操作时通过draw()进行，来看一下其主要源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">(Canvas canvas)</span> &#123;</span><br><span class="line">     ........</span><br><span class="line">    <span class="comment">// 绘制背景</span></span><br><span class="line">    drawBackground(canvas);</span><br><span class="line">    <span class="comment">// 绘制内容</span></span><br><span class="line">    onDraw(canvas);</span><br><span class="line">    <span class="comment">// 绘制子View</span></span><br><span class="line">    dispatchDraw(canvas);</span><br><span class="line">    <span class="comment">// 绘制装饰,如scrollBar</span></span><br><span class="line">    onDrawForeground(canvas)</span><br><span class="line">    ........</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>draw()方法中主要包含四部分内容，其中我们开发者只需要关心onDraw(canvas)即可，即自身的内容绘制。</p>
-<ul>
-<li>Canvas：画布，不管是文字，图形，图片都要通过画布绘制而成</li>
-<li>Paint：画笔，可设置颜色，粗细，大小，阴影等等等等，一般配合画布使用</li>
-<li>Path：路径，用于形成一些不规则图形。</li>
-<li>Matrix：矩阵，可实现对画布的几何变换。</li>
-</ul>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h5 id="参考博客："><a href="#参考博客：" class="headerlink" title="参考博客："></a>参考博客：</h5><p>1：<a target="_blank" rel="noopener" href="https://blog.csdn.net/cloudy_happy/article/details/107772981">(50条消息) Android中View的继承关系图_cloudy_happy的博客-CSDN博客_android view的继承关系</a></p>
-<p>2:<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1745688">Android 面试官：简述一下 View 的绘制流程，这个都答不出来就别想拿Offer了 - 腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/10/24/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-first" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/10/24/first/">first</a>
+    <h1 class="article-title" itemprop="name">
+      first
     </h1>
   
 
@@ -310,6 +176,27 @@
         
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -329,16 +216,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/10/24/first/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://jie-junyi.github.io/2022/10/24/first/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2022/10/24/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          View的绘制流程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/10/24/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -353,88 +308,32 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/10/24/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2022/10/24/hello-world/" class="archive-article-date">
-  	<time datetime="2022-10-24T09:04:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-10-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/10/24/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    目录，不存在的…
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
+  
+  
+  
 
   
+
+  
+
   
 
 
@@ -457,8 +356,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
