@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://jie-junyi.github.io">
-  <title>Jie-Sir</title>
+  <title>Java面向对象 | Jie-Sir</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Jie-Sir">
-<meta property="og:url" content="https://jie-junyi.github.io/index.html">
+  <meta name="description" content="浅谈面向对象OOP是什么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java面向对象">
+<meta property="og:url" content="https://jie-junyi.github.io/2022/11/19/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/index.html">
 <meta property="og:site_name" content="Jie-Sir">
+<meta property="og:description" content="浅谈面向对象OOP是什么">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-11-19T01:40:13.000Z">
+<meta property="article:modified_time" content="2022-11-19T02:16:21.487Z">
 <meta property="article:author" content="jie-junyi">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Jie-Sir" type="application/atom+xml">
@@ -150,16 +155,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-Java面向对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-Java面向对象" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/11/19/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">Java面向对象</a>
+    <h1 class="article-title" itemprop="name">
+      Java面向对象
     </h1>
   
 
@@ -173,11 +176,77 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>浅谈面向对象OOP是什么</p>
-        
-          <a class="article-more-a" href="/2022/11/19/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/#more">更多 >></a>
-        
+<span id="more"></span>
+
+<h1 id="Java面向对象"><a href="#Java面向对象" class="headerlink" title="Java面向对象"></a>Java面向对象</h1><h2 id="一、什么是面向对象编程（OOP）"><a href="#一、什么是面向对象编程（OOP）" class="headerlink" title="一、什么是面向对象编程（OOP）"></a>一、什么是面向对象编程（OOP）</h2><p>OOP全名为 Object Oriented Programming，即面向对象的编程。面向什么只是一种编程思想，不是编程语言，只能说这个编程语言更适合某个编程思想。就像Java一样，更适合面向对象，而C语言，也可以通过结构体来写出面向对象的风格，只是实际用起来画风总是有那么一丢丢怪。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cn</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> c;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="type">double</span> d;&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">cn</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">char</span> c;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="二、面向过程与面向对象"><a href="#二、面向过程与面向对象" class="headerlink" title="二、面向过程与面向对象"></a>二、面向过程与面向对象</h2><p>面向过程：做某件事情都需要自己亲历亲为，按照步骤去完成。</p>
+<p>面向对象：做某件事情不需要自己亲历亲为，只需指定特定的对象去完成即可。</p>
+<p>举个栗子：</p>
+<p>问题： 洗衣机里面放有脏衣服，怎么洗干净？</p>
+<p><strong>面向过程的解决方法：</strong></p>
+<p>1、执行加洗衣粉方法；</p>
+<p>2、执行加水方法；</p>
+<p>3、执行洗衣服方法；</p>
+<p>4、执行清洗方法；</p>
+<p>5、 执行烘干方法；</p>
+<p>以上就是将解决这个问题的过程拆成一个个方法（是没有对象去调用的），通过一个个方法的执行来解决问题。</p>
+<p><strong>面向对象的解决方法：</strong></p>
+<p>1、我先弄出两个对象：“洗衣机”对象和“人”对象</p>
+<p>2、针对对象“洗衣机”加入一些属性和方法：“洗衣服方法”“清洗方法”、“烘干方法”</p>
+<p>3、针对对象“人”加入属性和方法：“加洗衣粉方法”、“加水方法”</p>
+<p>4、然后执行</p>
+<p>人.加洗衣粉</p>
+<p>人.加水</p>
+<p>洗衣机.洗衣服</p>
+<p>洗衣机.清洗</p>
+<p>洗衣机.烘干</p>
+<p>面向对象的优点：解决同一个问题 ，面向对象编程就是先抽象出对象，然后用对象执行方法的方式解决问题。你可以并不需要知道洗衣机是怎么洗衣服、清洗、烘干的，你只需要加水、加洗衣液（让别人帮你写好洗衣机这个类），使代码更好维护。</p>
+<h2 id="三、面向对象"><a href="#三、面向对象" class="headerlink" title="三、面向对象"></a>三、面向对象</h2><h3 id="抽象"><a href="#抽象" class="headerlink" title="抽象"></a>抽象</h3><p>所谓的抽象，就是把同一类事物中共有的特征(属性)和行为(功能、方法)进行抽取，归纳，总结。</p>
+<p>抽象的过程其实就是面向对象编程的核心思想。</p>
+<p>举个栗子：</p>
+<p>一个老师有姓名、年龄、性别、职称、教授的课程这些属性，还具有上课、科研、吃饭休息等活动，我们可以把老师这个对象抽象成一个类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">teacher</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String sex;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> year;</span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String course;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">teach</span><span class="params">()</span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">eat</span><span class="params">()</span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">research</span><span class="params">()</span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="类"><a href="#类" class="headerlink" title="类"></a><strong>类</strong></h3><p>类：用来描述一类具有相同特征（属性）和相同行为（方法）的对象。</p>
+<p>Java中用class关键字来描述类</p>
+<p>成员属性（变量）：对应的就是事物的属性<br>成员方法：对象事物的行为<br>类的定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> class 类名&#123;</span><br><span class="line">    <span class="comment">//成员变量</span></span><br><span class="line">    <span class="comment">//成员方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义类：就是定义类的成员，包括成员变量和成员方法</p>
+<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3><p>对象（Object）是系统中用来描述客观事物的一个实体，它是构成系统的一个基本单位。</p>
+<p>它们是有形的，如一个人、一件物品；也可以是无形的，如一个计划、一次交易。（<strong>万事万物，皆对象</strong>）</p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -197,16 +266,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/11/19/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://jie-junyi.github.io/2022/11/19/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2022/10/24/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">View的绘制流程</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -221,227 +349,32 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-View的绘制流程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/10/24/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/">View的绘制流程</a>
-    </h1>
-  
-
-        
-        <a href="/2022/10/24/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2022-10-24T13:12:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-10-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>浅浅谈一下view的绘制流程，提到的源码不多，仅供初学者参考。</p>
-        
-          <a class="article-more-a" href="/2022/10/24/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/10/24/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.</span> <span class="toc-text">Java面向对象</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%EF%BC%88OOP%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">一、什么是面向对象编程（OOP）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.2.</span> <span class="toc-text">二、面向过程与面向对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.3.</span> <span class="toc-text">三、面向对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1"><span class="toc-number">1.3.1.</span> <span class="toc-text">抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB"><span class="toc-number">1.3.2.</span> <span class="toc-text">类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.3.3.</span> <span class="toc-text">对象</span></a></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
   
-    <article id="post-first" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/10/24/first/">first</a>
-    </h1>
   
 
-        
-        <a href="/2022/10/24/first/" class="archive-article-date">
-  	<time datetime="2022-10-24T09:04:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-10-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">尝试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/10/24/first/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/10/24/hello-world/">Hello World</a>
-    </h1>
   
 
-        
-        <a href="/2022/10/24/hello-world/" class="archive-article-date">
-  	<time datetime="2022-10-24T09:04:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-10-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-        
-          <a class="article-more-a" href="/2022/10/24/hello-world/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/10/24/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
+
   
 
 
@@ -464,8 +397,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
