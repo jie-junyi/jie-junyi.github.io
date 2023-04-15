@@ -155,54 +155,27 @@
     <article id="post-Android  滑动冲突" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/04/14/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/">Android  滑动冲突</a>
+    </h1>
+  
+
+        
+        <a href="/2023/04/14/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/" class="archive-article-date">
+  	<time datetime="2023-04-14T13:12:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-04-14</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Android-滑动冲突"><a href="#Android-滑动冲突" class="headerlink" title="Android  滑动冲突"></a>Android  滑动冲突</h1><p>这篇分享会先讲Android中View的事件分发机制，然后再介绍Android滑动冲突的形成原因并给出解决方案。</p>
-<h2 id="一、View的事件分发机制"><a href="#一、View的事件分发机制" class="headerlink" title="一、View的事件分发机制"></a>一、View的事件分发机制</h2><p>1、View的事件分发机制</p>
-<p>View的事件分发机制说白了就是点击事件的传递，也就是一个Down事件,若干个Move事件，一个Up事件构成的事件序列的传递。</p>
-<p>当你手指按了屏幕，点击事件就会遵循Activity-&gt;Window-&gt;View这一顺序传递。</p>
-<img src="https://cdn.jsdelivr.net/gh/jie-junyi/blog_image@main/PicGo/asynccode" alt="img" style="zoom: 67%;" />
-
-<p>这一传递过程有三个重要的方法，分别是：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="title function_">dispatchTouchEvent</span><span class="params">(MotionEvent ev)</span>,</span><br><span class="line"></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">onInterceptTouchEvent</span><span class="params">(MotionEvent event)</span>,</span><br><span class="line"></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">onTouchEvent</span><span class="params">(MotionEvent event)</span></span><br></pre></td></tr></table></figure>
-
-<p>先一个一个简单介绍下：</p>
-<p><strong>1：dispatchTouchEvent：</strong><br>只要事件传递到了当前View,那么dispatchTouchEcent方法就一定会被调用。返回结果表示是否消耗当前事件。</p>
-<p><strong>2：onInterceptTouchEvent：</strong><br>在dispatchTouchEcent方法内部调用此方法，用来判断是否拦截某个事件。如果当前View拦截了某个事件，那么在这同一个事件序列中，此方法不会再次被调用。返回结果表示是否拦截当前事件。</p>
-<p><strong>3：onTouchEvent：</strong><br>在dispatchTouchEcent方法内调用此方法，用来处理事件。返回结果表示是否处理当前事件，如果不处理，那么在同一个事件序列里面，当前View无法再收到后续的事件。</p>
-<p>上面的解释听起来比较抽象，我们可以用一段伪代码来表示上面三个方法的关系</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">dispatchTouchEvent</span><span class="params">(MotionEvent e)</span>&#123;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">consum</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span>(onInterceptTouchEvent(e))&#123;</span><br><span class="line">        consum = onTouchEvent(e);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        consum = child.dispatchTouchEvent(e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> consum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面代码很好的解释了三个方法之间的关系，我们也可以从代码中大致摸索到事件传递的顺序规则：</p>
-<p>当点击事件传递到根ViewGroup里，会执行dispatchTouchEvent，在其内部会先调用onInterceptTouchEvent询问是否拦截事件，若拦截，则执行onTouchEvent方法处理这个事件；</p>
-<p>若不拦截，则执行子元素的dispatchTouchEvent，进入向下分发的传递，直到事件被处理。</p>
-<p>讲了这么多事件分发机制，那它跟我们今天要bb的滑动冲突有什么关系呢？</p>
-<h2 id="二、滑动冲突场景以及产生原因"><a href="#二、滑动冲突场景以及产生原因" class="headerlink" title="二、滑动冲突场景以及产生原因"></a>二、滑动冲突场景以及产生原因</h2><p>产生滑动冲突的场景主要有两种:</p>
-<ul>
-<li><p>父ViewGroup和子View的滑动方向不一致</p>
-</li>
-<li><p>父ViewGroup和子View的滑动方向一致</p>
-<img src="https://cdn.jsdelivr.net/gh/jie-junyi/blog_image@main/PicGo/56f7666a8a44e63896d91d80580231ef.jpg" alt="56f7666a8a44e63896d91d80580231ef" style="zoom: 80%;" />
-
-<img src="https://cdn.jsdelivr.net/gh/jie-junyi/blog_image@main/PicGo/03dbb090cdd0f2464c332fdc4ea4f.jpg" alt="03dbb090cdd0f2464c332fdc4ea4f" style="zoom: 80%;" /></li>
-</ul>
-<p>我们知道他们的共同特点是父View 和子View都想争着响应我们的触摸事件，但遗憾的是我们的触摸事件 同一时刻只能被某一个View或者ViewGroup拦截消费，所以就产生了滑动冲突？那既然同一时刻只能由某一个View或者ViewGroup消费拦截，那我们就只需要 决定在某个时刻由这个 View 或者 ViewGroup 拦截事件，另外的 某个时刻由 另外一个 View 或者 ViewGroup 拦截事件，不就OK了吗？</p>
-<h2 id="三、ViewPager-滑动冲突"><a href="#三、ViewPager-滑动冲突" class="headerlink" title="三、ViewPager 滑动冲突"></a>三、ViewPager 滑动冲突</h2><h3 id="ViewPager-滑动冲突"><a href="#ViewPager-滑动冲突" class="headerlink" title="ViewPager 滑动冲突"></a>ViewPager 滑动冲突</h3><p>例如我们使用ViewPager时，往往会结合Fragment，然后Fragment内部为一个ListView。这里ViewPager已经为我们解决了滑动冲突，因此在使用时并不会冲突。试想下，若ViewPager未解决滑动冲突，默认情况下ViewPager的<strong>onInterceptTouchEvent</strong>方法返回false，由于ListView可以滚动，代表ListView可以处理事件，所以所有事件都被ListView处理了，因此我们看到的效果会是ListView可以在竖直方向上滚动，但是ViewPager在水平方向上无法滑动。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyViewPager</span> <span class="keyword">extends</span> <span class="title class_">ViewPager</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyViewPager</span><span class="params">(<span class="meta">@NonNull</span> Context context)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyViewPager</span><span class="params">(<span class="meta">@NonNull</span> Context context, <span class="meta">@Nullable</span> AttributeSet attrs)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="四、外部拦截法"><a href="#四、外部拦截法" class="headerlink" title="四、外部拦截法"></a>四、外部拦截法</h2><p>所谓外部拦截法，就是当事件传递到父容器时，通过父容器去判断自己是否需要此事件，若需要则拦截事件，不需要则不拦截事件，将事件传递给子View。 上述MyViewPager和ListView显然产生了滑动冲突，我们来分析下。我们要的效果是在水平方向上滑动时ViewPager可以水平滚动，在竖直方向上滑动时，ListView可以滚动但ViewPager不动，因此我们需要为ViewGroup指定事件处理的条件。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> &#123;</span><br><span class="line">    <span class="keyword">switch</span> (ev.getAction()) &#123;</span><br><span class="line">        <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</span><br><span class="line">            <span class="keyword">if</span> (ViewPager需要此事件) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>这边ViewPager处理事件的条件可以有多种方法，例如水平方向和竖直方向上的滑动速度、水平方向和竖直方向的滑动距离等。这边根据滑动距离判断，当水平方向的滑动距离大于竖直方向的滑动距离，则ViewPager处理事件，反之则将事件传递给ListView。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyViewPager</span> <span class="keyword">extends</span> <span class="title class_">ViewPager</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mLastX;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mLastY;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyViewPager</span><span class="params">(<span class="meta">@NonNull</span> Context context)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyViewPager</span><span class="params">(<span class="meta">@NonNull</span> Context context, <span class="meta">@Nullable</span> AttributeSet attrs)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> &#123;</span><br><span class="line">        <span class="comment">//一些ViewPager拖拽的标志位要设置，必调super，否则看不到效果</span></span><br><span class="line">        <span class="built_in">super</span>.onInterceptTouchEvent(ev);</span><br><span class="line"></span><br><span class="line">        <span class="type">boolean</span> <span class="variable">isIntercepted</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">switch</span> (ev.getAction()) &#123;</span><br><span class="line">            <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</span><br><span class="line">                <span class="keyword">if</span> (needEvent(ev)) &#123;</span><br><span class="line">                    isIntercepted = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">        &#125;</span><br><span class="line">        mLastX = (<span class="type">int</span>) ev.getX();</span><br><span class="line">        mLastY = (<span class="type">int</span>) ev.getY();</span><br><span class="line"></span><br><span class="line">        LogUtils.d(<span class="string">&quot; lastX = &quot;</span> + mLastX + <span class="string">&quot; lastY = &quot;</span> + mLastY);</span><br><span class="line">        <span class="keyword">return</span> isIntercepted;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">needEvent</span><span class="params">(MotionEvent ev)</span> &#123;</span><br><span class="line">        <span class="comment">//水平滚动距离大于垂直滚动距离则将事件交由ViewPager处理</span></span><br><span class="line">        <span class="keyword">return</span> Math.abs(ev.getX() - mLastX) &gt; Math.abs(ev.getY() - mLastY);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
-<li>外部拦截法主要是父容器去控制事件的拦截，若事件是父容器需要的，则进行拦截，不需要的则向下传递。</li>
-<li>父容器不能拦截DOWN事件或者UP事件</li>
-</ul>
-
+        <p>滑动冲突</p>
+        
+          <a class="article-more-a" href="/2023/04/14/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/#more">更多 >></a>
+        
       
 
       
@@ -210,11 +183,22 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/04/15/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/">展开全文 >></a>
+          <a class="article-more-a" href="/2023/04/14/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/">展开全文 >></a>
         </p>
       
 
@@ -648,11 +632,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android</a>
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android</a>
               </li>
              
               <li class="article-tag-list-item">

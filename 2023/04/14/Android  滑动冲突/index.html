@@ -6,21 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://jie-junyi.github.io">
-  <title>Jie-Sir</title>
+  <title>Android  滑动冲突 | Jie-Sir</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Android  滑动冲突这篇分享会先讲Android中View的事件分发机制，然后再介绍Android滑动冲突的形成原因并给出解决方案。 一、View的事件分发机制1、View的事件分发机制 View的事件分发机制说白了就是点击事件的传递，也就是一个Down事件,若干个Move事件，一个Up事件构成的事件序列的传递。 当你手指按了屏幕，点击事件就会遵循Activity-&gt;Window-&amp;g">
+  <meta name="description" content="滑动冲突">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Jie-Sir">
-<meta property="og:url" content="https://jie-junyi.github.io/2023/04/15/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/index.html">
+<meta property="og:title" content="Android  滑动冲突">
+<meta property="og:url" content="https://jie-junyi.github.io/2023/04/14/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/index.html">
 <meta property="og:site_name" content="Jie-Sir">
-<meta property="og:description" content="Android  滑动冲突这篇分享会先讲Android中View的事件分发机制，然后再介绍Android滑动冲突的形成原因并给出解决方案。 一、View的事件分发机制1、View的事件分发机制 View的事件分发机制说白了就是点击事件的传递，也就是一个Down事件,若干个Move事件，一个Up事件构成的事件序列的传递。 当你手指按了屏幕，点击事件就会遵循Activity-&gt;Window-&amp;g">
+<meta property="og:description" content="滑动冲突">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/jie-junyi/blog_image@main/PicGo/asynccode">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/jie-junyi/blog_image@main/PicGo/56f7666a8a44e63896d91d80580231ef.jpg">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/jie-junyi/blog_image@main/PicGo/03dbb090cdd0f2464c332fdc4ea4f.jpg">
-<meta property="article:published_time" content="2023-04-15T00:16:02.008Z">
-<meta property="article:modified_time" content="2023-04-15T01:50:36.019Z">
+<meta property="article:published_time" content="2023-04-14T13:12:13.000Z">
+<meta property="article:modified_time" content="2023-04-15T02:16:38.200Z">
 <meta property="article:author" content="jie-junyi">
+<meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jie-junyi/blog_image@main/PicGo/asynccode">
   
@@ -161,9 +162,27 @@
             <article id="post-Android  滑动冲突" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android  滑动冲突
+    </h1>
+  
+
+        
+        <a href="/2023/04/14/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/" class="archive-article-date">
+  	<time datetime="2023-04-14T13:12:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-04-14</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Android-滑动冲突"><a href="#Android-滑动冲突" class="headerlink" title="Android  滑动冲突"></a>Android  滑动冲突</h1><p>这篇分享会先讲Android中View的事件分发机制，然后再介绍Android滑动冲突的形成原因并给出解决方案。</p>
+        <p>滑动冲突</p>
+<span id="more"></span>
+
+<h1 id="Android-滑动冲突"><a href="#Android-滑动冲突" class="headerlink" title="Android  滑动冲突"></a>Android  滑动冲突</h1><p>这篇分享会先讲Android中View的事件分发机制，然后再介绍Android滑动冲突的形成原因并给出解决方案。</p>
 <h2 id="一、View的事件分发机制"><a href="#一、View的事件分发机制" class="headerlink" title="一、View的事件分发机制"></a>一、View的事件分发机制</h2><p>1、View的事件分发机制</p>
 <p>View的事件分发机制说白了就是点击事件的传递，也就是一个Down事件,若干个Move事件，一个Up事件构成的事件序列的传递。</p>
 <p>当你手指按了屏幕，点击事件就会遵循Activity-&gt;Window-&gt;View这一顺序传递。</p>
@@ -237,6 +256,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -287,7 +317,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://jie-junyi.github.io/2023/04/15/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://jie-junyi.github.io/2023/04/14/Android%20%20%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -463,11 +493,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android</a>
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android</a>
               </li>
              
               <li class="article-tag-list-item">
